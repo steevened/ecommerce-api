@@ -2,11 +2,12 @@ const db = require('../utils/database');
 const { DataTypes } = require('sequelize');
 
 const productInOrder = db.define(
-  'productsInOrder',
+  'products_in_order',
   {
     id: {
       primaryKey: true,
       type: DataTypes.INTEGER,
+      autoIncrement: true,
     },
     order_id: {
       type: DataTypes.INTEGER,
@@ -24,7 +25,7 @@ const productInOrder = db.define(
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    product_in_order_status: {
+    status: {
       type: DataTypes.ENUM('not_purchased', 'purchased'),
       defaultValue: 'purchased',
     },

@@ -2,7 +2,7 @@ const db = require('../utils/database');
 const { DataTypes } = require('sequelize');
 
 const productInCart = db.define(
-  'productsInCart',
+  'products_in_cart',
   {
     id: {
       primaryKey: true,

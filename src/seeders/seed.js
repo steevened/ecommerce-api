@@ -3,6 +3,8 @@ const Users = require('../models/users.models');
 const Product = require('../models/product.models');
 const Order = require('../models/Order.models');
 const Cart = require('../models/Cart.models');
+const ProductsInCart = require('../models/ProductInCart.models');
+const ProductsInOrder = require('../models/ProductInOrder.models');
 const initModels = require('../models/initModels');
 
 initModels();
@@ -102,6 +104,66 @@ const carts = [
   },
 ];
 
+const productsInCart = [
+  {
+    cart_id: 1,
+    product_id: 1,
+    quantity: 1,
+    price: 100.0,
+    status: 'not_purchased',
+  },
+  {
+    cart_id: 2,
+    product_id: 2,
+    quantity: 2,
+    price: 200.0,
+    status: 'not_purchased',
+  },
+  {
+    cart_id: 3,
+    product_id: 3,
+    quantity: 3,
+    price: 300.0,
+  },
+  {
+    cart_id: 4,
+    product_id: 4,
+    quantity: 4,
+    price: 400.0,
+    status: 'purchased',
+  },
+];
+
+const productsInOrder = [
+  {
+    order_id: 1,
+    product_id: 1,
+    quantity: 1,
+    price: 100.0,
+    status: 'not_purchased',
+  },
+  {
+    order_id: 2,
+    product_id: 2,
+    quantity: 2,
+    price: 200.0,
+  },
+  {
+    order_id: 3,
+    product_id: 3,
+    quantity: 3,
+    price: 300.0,
+    status: 'purchased',
+  },
+  {
+    order_id: 4,
+    product_id: 4,
+    quantity: 4,
+    price: 400.0,
+    status: 'not_purchased',
+  },
+];
+
 db.sync({ force: true })
   .then(() => {
     console.log('starting seed');
@@ -112,16 +174,26 @@ db.sync({ force: true })
       products.forEach((product) => {
         Product.create(product);
       });
-    }, 300);
+    }, 1000);
     setTimeout(() => {
       orders.forEach((order) => {
         Order.create(order);
       });
-    }, 600);
+    }, 2000);
     setTimeout(() => {
       carts.forEach((cart) => {
         Cart.create(cart);
       });
-    }, 900);
+    }, 3000);
+    setTimeout(() => {
+      productsInCart.forEach((product) => {
+        ProductsInCart.create(product);
+      });
+    }, 4000);
+    setTimeout(() => {
+      productsInOrder.forEach((product) => {
+        ProductsInOrder.create(product);
+      });
+    }, 5000);
   })
   .catch((error) => console.log(error));
