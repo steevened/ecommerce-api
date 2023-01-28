@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const db = require('./utils/database');
 const initModels = require('./models/initModels');
 const authRouter = require('./routes/auth.routes');
+const routerApi = require('./routes');
 
 const app = express();
 
@@ -11,16 +12,12 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan('tiny'));
 
-initModels();
+initModels(app);
 
-db.sync({ force: false })
-  .then(() => console.log('db synched'))
-  .catch((error) => console.log(error));
+// db.sync({ force: false })
+//   .then(() => console.log('db synched'))
+//   .catch((error) => console.log(error));
 
-app.get('/', (req, res) => {
-  res.json({ message: 'welcome to the server' });
-});
-
-app.use('/api/v1/auth', authRouter);
+routerApi(app);
 
 module.exports = app;
