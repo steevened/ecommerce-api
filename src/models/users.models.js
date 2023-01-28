@@ -29,6 +29,7 @@ const users = db.define(
     },
   },
   {
+    timestamps: false,
     hooks: {
       beforeCreate: (user, options) => {
         const { password } = user;
