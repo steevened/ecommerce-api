@@ -5,6 +5,7 @@ const initModels = require('./models/initModels');
 const routerApi = require('./routes');
 const errorHandler = require('./middlewares/error.middleware');
 const tokenExtractor = require('./middlewares/tokenExtractor.middleware');
+const db = require('./utils/database');
 
 const app = express();
 
@@ -17,8 +18,8 @@ app.use(tokenExtractor);
 app.use(errorHandler);
 routerApi(app);
 
-// db.sync({ force: false })
-//   .then(() => console.log('db synched'))
-//   .catch((error) => console.log(error));
+db.sync({ force: false })
+  .then(() => console.log('db synched'))
+  .catch((error) => console.log(error));
 
 module.exports = app;

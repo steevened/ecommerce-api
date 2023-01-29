@@ -5,8 +5,21 @@ const getAllProducts = async (req, res, next) => {
     const products = await ProductServices.getAllProducts();
     res.json(products);
   } catch (error) {
-    res.status(400).json(error.message);
+    // res.status(400).json(error.message);
+    next(error);
   }
 };
 
-module.exports = { getAllProducts };
+const createProduct = async (req, res, next) => {
+  try {
+    const { body } = req;
+    const user_id = await req.user.id;
+    const newProduct = { ...body, user_id };
+    const result = await ProductServices.createProduct(newProduct);
+    res.status(201).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getAllProducts, createProduct };

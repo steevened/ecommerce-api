@@ -9,3 +9,5 @@ const userExtractor = (req, res, next) => {
   req.user = decodedToken;
   next();
 };
+
+module.exports = userExtractor;

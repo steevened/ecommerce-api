@@ -22,6 +22,10 @@ const product = db.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    picture: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     status: {
       type: DataTypes.ENUM('not_purchased', 'purchased'),
       defaultValue: 'not_purchased',
