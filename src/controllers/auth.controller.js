@@ -34,8 +34,7 @@ const login = async (req, res) => {
       const { username, id, email } = result.user;
       const userData = { username, id, email };
       const token = AuthServices.genToken(userData);
-      result.user.token = token;
-      res.json(result.user);
+      res.json({ id, username, email, token });
     } else {
       res.status(400).json('user not found');
     }
