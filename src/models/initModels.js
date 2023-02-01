@@ -42,15 +42,15 @@ const initModels = () => {
 
   // // product relations---------------------
   // ///product -productInCart
-  product.hasOne(productInCart, {
-    as: 'productInCart',
-    foreignKey: 'product_id',
-  });
-
-  // productInCart.hasOne(product, {
-  //   as: 'product',
+  // product.hasOne(productInCart, {
+  //   as: 'productInCart',
   //   foreignKey: 'product_id',
   // });
+
+  productInCart.hasOne(product, {
+    as: 'product',
+    foreignKey: 'product_id',
+  });
 
   ///product -productInOrder
   product.hasOne(productInOrder, {

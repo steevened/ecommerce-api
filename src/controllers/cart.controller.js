@@ -16,10 +16,20 @@ const addProductToCart = async (req, res, next) => {
     const { product_id, quantity } = req.body;
     const fields = { product_id, quantity };
     const result = await CartServices.addProductToCart(fields, user);
-    res.json(fields);
+    res.json(result);
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { addProductToCart, getCart };
+const getProductsInCart = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const result = await CartServices.getProductsInCart(user);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { addProductToCart, getCart, getProductsInCart };
