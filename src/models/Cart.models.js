@@ -16,7 +16,7 @@ const cart = db.define(
     total_price: {
       type: DataTypes.FLOAT,
       defaultValue: 0,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
