@@ -4,6 +4,7 @@ const Cart = require('../models/Cart.models');
 const ProductsInCart = require('../models/ProductInCart.models');
 const ProductsInOrder = require('../models/ProductInOrder.models');
 const product = require('../models/product.models');
+const CartServices = require('./cart.services');
 
 class OrderServices {
   static async gerOrders(user_id) {
@@ -25,31 +26,15 @@ class OrderServices {
     }
   }
 
-  static async getCart(id) {
+  static async getOrderNotPurchased(id) {
     try {
-      const cart = await Cart.findOne({
-        where: { user_id: id },
-        include: {
-          model: ProductsInCart,
-          as: 'productsInCart',
-          include: {
-            model: product,
-            as: 'product',
-          },
+      const result = await Order.findOne({
+        where: {
+          user_id: id,
+          status: 'not_purchased',
         },
       });
-      return cart;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async getProductsInCart(id) {
-    try {
-      const productsInCart = await ProductsInCart.findAll({
-        where: { cart_id: id },
-      });
-      return productsInCart;
+      return result;
     } catch (error) {
       throw error;
     }
@@ -68,28 +53,35 @@ class OrderServices {
 
   static async makeOrder(user_id) {
     try {
-      const cart = await this.getCart(user_id);
-      const orders = await this.gerOrders(user_id);
-      // const productsInCart = await this.getProductsInCart(cart.id);
-      // const productsInOrder = await this.getProductsInOrder(order.id);
-      const orderObj = {
-        total_price: cart.total_price,
-        user_id,
-        status: 'purchased',
-      };
-      return orderObj;
-      // const order = await Order.create(orderObj);
-      // const productsInOrder = {
-      //   product_id
-      // };
-      // await Cart.update(
-      //   { total_price: 0 },
-      //   {
-      //     where: { total_price },
-      //   }
-      // );
-
-      // await ProductsInOrder.create();
+      const orderNotPurchased = await this.getOrderNotPurchased(user_id);
+      const cart = await Cart.findOne({
+        where: { user_id },
+      });
+      await Cart.update(
+        { total_price: 0 },
+        {
+          where: { user_id },
+        }
+      );
+      await ProductsInCart.destroy({
+        where: { cart_id: cart.id },
+      });
+      await ProductsInOrder.update(
+        { status: 'purchased' },
+        {
+          where: { order_id: orderNotPurchased.id },
+        }
+      );
+      const order = Order.update(
+        { status: 'purchased' },
+        {
+          where: {
+            user_id,
+            status: 'not_purchased',
+          },
+        }
+      );
+      return order;
     } catch (error) {
       throw error;
     }

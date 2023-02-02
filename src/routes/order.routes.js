@@ -5,6 +5,6 @@ const userExtractor = require('../middlewares/userExtractor.middleware');
 const router = Router();
 
 router.get('/', userExtractor, gerOrders);
-router.post('/', userExtractor, makeOrder);
+router.put('/', userExtractor, makeOrder);
 
 module.exports = router;

@@ -1,7 +1,10 @@
 const Cart = require('../models/Cart.models');
+const Order = require('../models/Order.models');
 const Products = require('../models/product.models');
-const productInCart = require('../models/ProductInCart.models');
 const ProductInCart = require('../models/ProductInCart.models');
+const OrderServices = require('./orders.services');
+const ProductInOrder = require('../models/ProductInOrder.models');
+const order = require('../models/Order.models');
 
 class CartServices {
   static async getCart(user) {
@@ -18,34 +21,55 @@ class CartServices {
   static async addProductToCart(fields, user) {
     try {
       const { product_id, quantity } = fields;
-      const cart = await Cart.findOne({
-        where: { id: user.id },
-      });
+      const cart = await this.getCart(user);
+      const orderNotPurchased = await OrderServices.getOrderNotPurchased(
+        user.id
+      );
+      if (!orderNotPurchased) {
+        await order.create({ user_id: user.id });
+      }
+
       const product = await Products.findOne({
         where: { id: product_id },
       });
       const price = product.price * quantity;
       const updatedProductQty = product.available_qty - quantity;
       const totalPrice = cart.total_price + price;
-      const productObj = {
+      const productObjCart = {
         cart_id: cart.id,
         product_id,
         quantity,
         price,
       };
-      const result = await ProductInCart.create(productObj);
+      const productObjOrder = {
+        order_id: orderNotPurchased.id,
+        product_id,
+        quantity,
+        price,
+      };
+
+      const result = await ProductInCart.create(productObjCart);
+      await ProductInOrder.create(productObjOrder);
       await Cart.update(
         { total_price: totalPrice },
         {
           where: { id: cart.id },
         }
       );
-      await Products.update(
-        { available_qty: updatedProductQty },
+      await Order.update(
         {
-          where: { id: product.id },
+          total_price: totalPrice,
+        },
+        {
+          where: { id: orderNotPurchased.id },
         }
       );
+      // await Products.update(
+      //   { available_qty: updatedProductQty },
+      //   {
+      //     where: { id: product.id },
+      //   }
+      // );
 
       return result;
     } catch (error) {
@@ -59,7 +83,7 @@ class CartServices {
       const cart = await Cart.findOne({
         where: { user_id },
         include: {
-          model: productInCart,
+          model: ProductInCart,
           as: 'productsInCart',
           include: {
             model: Products,

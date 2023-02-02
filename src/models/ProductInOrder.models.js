@@ -27,7 +27,7 @@ const productInOrder = db.define(
     },
     status: {
       type: DataTypes.ENUM('not_purchased', 'purchased'),
-      defaultValue: 'purchased',
+      defaultValue: 'not_purchased',
     },
   },
   {
