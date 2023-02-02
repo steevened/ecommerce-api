@@ -42,26 +42,26 @@ const initModels = () => {
 
   // // product relations---------------------
   // ///product -productInCart
-  // product.hasOne(productInCart, {
-  //   as: 'productInCart',
-  //   foreignKey: 'product_id',
-  // });
+  product.hasMany(productInCart, {
+    as: 'productInCart',
+    foreignKey: 'product_id',
+  });
 
-  productInCart.hasOne(product, {
+  productInCart.belongsTo(product, {
     as: 'product',
     foreignKey: 'product_id',
   });
 
   ///product -productInOrder
-  product.hasOne(productInOrder, {
+  product.hasMany(productInOrder, {
     as: 'productInOrder',
     foreignKey: 'product_id',
   });
 
-  // productInOrder.hasOne(product, {
-  //   as: 'product',
-  //   foreignKey: 'product_id',
-  // });
+  productInOrder.belongsTo(product, {
+    as: 'product',
+    foreignKey: 'product_id',
+  });
 
   ///productInCart - cart
   productInCart.belongsTo(cart, {

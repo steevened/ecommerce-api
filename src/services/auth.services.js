@@ -2,6 +2,7 @@ const Users = require('../models/users.models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cart = require('../models/Cart.models');
+const order = require('../models/Order.models');
 require('dotenv').config();
 
 class AuthServices {
@@ -11,7 +12,11 @@ class AuthServices {
       const cartObject = {
         user_id: result.id,
       };
+      const orderObject = {
+        user_id: result.id,
+      };
       await cart.create(cartObject);
+      await order.create(orderObject);
       return result;
     } catch (error) {
       throw error;
