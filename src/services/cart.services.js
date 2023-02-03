@@ -22,12 +22,11 @@ class CartServices {
     try {
       const { product_id, quantity } = fields;
       const cart = await this.getCart(user);
-      const orderNotPurchased = await OrderServices.getOrderNotPurchased(
-        user.id
-      );
-      if (!orderNotPurchased) {
-        await order.create({ user_id: user.id });
-      }
+      const orders = await OrderServices.gerOrders(user.id);
+      const orderNotPurchased = await Order.create({
+        total_price: cart.total_price,
+        user_id: user.id,
+      });
 
       const product = await Products.findOne({
         where: { id: product_id },
@@ -42,7 +41,7 @@ class CartServices {
         price,
       };
       const productObjOrder = {
-        order_id: orderNotPurchased.id,
+        order_id: orderNotPurchased.id || orders[orders.length - 1].id,
         product_id,
         quantity,
         price,
@@ -64,12 +63,12 @@ class CartServices {
           where: { id: orderNotPurchased.id },
         }
       );
-      // await Products.update(
-      //   { available_qty: updatedProductQty },
-      //   {
-      //     where: { id: product.id },
-      //   }
-      // );
+      await Products.update(
+        { available_qty: updatedProductQty },
+        {
+          where: { id: product.id },
+        }
+      );
 
       return result;
     } catch (error) {

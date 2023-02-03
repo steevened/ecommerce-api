@@ -12,11 +12,7 @@ class AuthServices {
       const cartObject = {
         user_id: result.id,
       };
-      const orderObject = {
-        user_id: result.id,
-      };
       await cart.create(cartObject);
-      await order.create(orderObject);
       return result;
     } catch (error) {
       throw error;
