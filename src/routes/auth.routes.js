@@ -25,9 +25,9 @@ const router = Router();
  *             schema:
  *               type: object
  *               properties:
- *                message:
- *                  type: string
- *                  example: User created
+ *                 message:
+ *                   type: string
+ *                   example: User created
  *       400:
  *         description: Validation error
  *         content:
