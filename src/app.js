@@ -14,9 +14,10 @@ app.use(cors());
 app.use(morgan('tiny'));
 
 initModels(app);
-app.use(errorHandler);
+
 app.use(tokenExtractor);
 routerApi(app);
+app.use(errorHandler);
 
 db.sync({ force: false })
   .then(() => console.log('db synched'))

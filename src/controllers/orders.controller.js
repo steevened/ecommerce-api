@@ -14,7 +14,7 @@ const makeOrder = async (req, res, next) => {
   const user_id = req.user.id;
   try {
     const order = await OrderServices.makeOrder(user_id);
-    res.json(order);
+    res.json({ message: 'Order purchased' });
   } catch (error) {
     next(error);
   }

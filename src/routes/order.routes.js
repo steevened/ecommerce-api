@@ -44,6 +44,31 @@ const router = Router();
  *                 message:
  *                   type: string
  *                   example: invalid or missing token
+ *   put:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: make order
+ *     tags:
+ *       - [Orders]
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: Order purchased
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Order purchased
  */
 
 router.get('/', userExtractor, gerOrders);
