@@ -6,6 +6,7 @@ const options = {
     './src/routes/auth.routes.js',
     './src/routes/cart.routes.js',
     './src/models/users.models.js',
+    './src/models/Cart.models.js',
   ],
   definition: {
     openapi: '3.0.0',
