@@ -5,8 +5,11 @@ const options = {
   apis: [
     './src/routes/auth.routes.js',
     './src/routes/cart.routes.js',
+    './src/routes/products.routes.js',
+    './src/routes/order.routes.js',
     './src/models/users.models.js',
     './src/models/Cart.models.js',
+    './src/models/product.models.js',
   ],
   definition: {
     openapi: '3.0.0',
