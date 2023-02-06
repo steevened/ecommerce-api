@@ -49,16 +49,69 @@ const router = Router();
  *                message:
  *                  type: string
  *                  example: token invalid
+ *   post:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: add product to cart
+ *     tags:
+ *       - [Cart]
+ *     requestBody:
+ *       description: Required fields to add a product to cart
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/addProductToCart'
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/productAddedToCart'
  * /api/v1/cart/products:
  *   get:
  *     security:
  *       - bearerAuth: []
  *     summary: get products in cart
+ *     tags:
+ *       - [Cart]
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: '#/components/schemas/getProductsInCart'
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/getProductsInCart'
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: something wrong
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: invalid or missing token
  *
  */
 
 router.get('/', userExtractor, getCart);
-router.get('/products', userExtractor, getProductsInCart);
 router.post('/', userExtractor, addProductToCart);
+router.get('/products', userExtractor, getProductsInCart);
 
 module.exports = router;
